@@ -2,14 +2,17 @@
 version: '3'
 services:
   mdb:
-    image: 'mariadb:10.3'
+    image: 'docker.io/bitnami/mariadb:10.3-debian-10'
     environment:
-      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-      - MYSQL_USER=mw_user
-      - MYSQL_PASSWORD=kd14
-      - MYSQL_DATABASE=mediawiki_db
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_USER=bn_mediawiki
+      - MARIADB_PASSWORD=kd14
+      - MARIADB_DATABASE=bitnami_mediawiki
     volumes:
-      - 'mdb_data:/var/lib/mysql'
+      - 'mdb_data:/bitnami/mariadb'
+      #- 'mariadb_data:/bitnami/common'
+      #- 'mdb_data:/var/lib/mysql'
+      #- 'mariadb_data:/usr/local'
   mw:
     image: 'docker.io/bitnami/mediawiki:1-debian-10'
     ports:
@@ -17,9 +20,9 @@ services:
       - '443:8443'
     environment:
       - ALLOW_EMPTY_PASSWORD=yes
-      - MEDIAWIKI_DATABASE_USER=mw_user
+      - MEDIAWIKI_DATABASE_USER=bn_mediawiki
       - MEDIAWIKI_DATABASE_PASSWORD=kd14
-      - MEDIAWIKI_DATABASE_NAME=mediawiki_db
+      - MEDIAWIKI_DATABASE_NAME=bitnami_mediawiki
       - MEDIAWIKI_HOST=localhost:9786
       - MEDIAWIKI_DATABASE_HOST=mdb
       - MEDIAWIKI_DATABASE_PORT_NUMBER=3306
